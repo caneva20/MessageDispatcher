@@ -1,6 +1,7 @@
 package me.caneva20.messagedispatcher.tokenizing.tokens;
 
 import me.caneva20.messagedispatcher.tokenizing.IToken;
+import org.jetbrains.annotations.NotNull;
 
 public class LiteralStringToken implements IToken {
     public final String content;
@@ -10,7 +11,12 @@ public class LiteralStringToken implements IToken {
     }
 
     @Override
-    public String getContent() {
+    public String getName() {
+        return null;
+    }
+
+    @Override
+    public @NotNull String getContent() {
         return content;
     }
 

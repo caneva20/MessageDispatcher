@@ -1,6 +1,7 @@
 package me.caneva20.messagedispatcher.tokenizing.tokens;
 
 import me.caneva20.messagedispatcher.tokenizing.IToken;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
@@ -21,7 +22,12 @@ public class InvalidToken implements IToken {
     }
 
     @Override
-    public String getContent() {
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public @NotNull String getContent() {
         return partialContent.stream().map(IToken::getContent).collect(Collectors.joining());
     }
 }
