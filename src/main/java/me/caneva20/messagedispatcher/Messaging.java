@@ -8,6 +8,12 @@ public class Messaging {
 
     public static ColorSet defaultColorSet = new ColorSet('2', 'a', '6', '0');
 
+    public static String makeTag(String name, MessageLevel level) {
+        ColorSet colors = getColorSet(level);
+
+        return String.format("&%s[&%s%s&%s] ", colors.detail, colors.accent, name, colors.detail);
+    }
+
     public static ColorSet getColorSet(MessageLevel level) {
         return colors.getOrDefault(level, defaultColorSet);
     }
