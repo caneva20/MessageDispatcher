@@ -12,10 +12,11 @@ public class Tokenizer implements ITokenizer {
     private static final char BEGINNING = '$';
     private static final char OPENING = '<';
     private static final char CLOSING = '>';
+    private static final char ESCAPING = '\\';
 
     @Override
     public List<IToken> tokenize(String raw) {
-        StringReader reader = new StringReader(raw);
+        StringReader reader = new StringReader(raw, ESCAPING);
         List<IToken> tokens = new ArrayList<>();
 
         while (reader.hasNext()) {

@@ -8,17 +8,20 @@ import java.util.List;
 
 public class StringReader {
     private final String raw;
+    private final char escapingChar;
+
     private final char[] chars;
     private final int _length;
 
     private int _currentIndex = 0;
     private StringBuilder _currentPhrase = new StringBuilder();
 
-    public StringReader(String rawString) {
+    public StringReader(String rawString, char escapingChar) {
         this.raw = rawString;
         _length = rawString.length();
 
         chars = rawString.toCharArray();
+        this.escapingChar = escapingChar;
     }
 
     public boolean hasNext() {
@@ -56,11 +59,15 @@ public class StringReader {
         _currentIndex++;
     }
 
+    @SuppressWarnings("ConstantConditions")
     public String readTo(List<Character> targets) {
         while (hasNext()) {
-            Character _currentChar = getCurrentChar();
+            char _currentChar = getCurrentChar();
 
-            if (targets.contains(_currentChar)) {
+            if (_currentChar == escapingChar) {
+                moveNext();
+                _currentChar = getCurrentChar();
+            } else if (targets.contains(_currentChar)) {
                 return getCurrentPhrase();
             }
 
