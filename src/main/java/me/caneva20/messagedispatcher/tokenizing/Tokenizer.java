@@ -111,7 +111,7 @@ public class Tokenizer implements ITokenizer {
                 String parameterName = readParameterName(reader);
                 
                 if (parameterName != null) {
-                    return new ParameterToken(name);
+                    return new ParameterToken(parameterName);
                 }
             } else {
                 return new TagToken(name, tokenize(reader));
