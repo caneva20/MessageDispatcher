@@ -32,10 +32,10 @@ public class Tokenizer implements ITokenizer {
         return tokens;
     }
 
-    private void printUnexpectedTokenError(String raw, char token, char expected, int index) {
+    private void printUnexpectedTokenError(StringReader reader, char token, char expected) {
         System.out.printf("Error: token '%s' is not allowed at %s. Expected was %s\n",
                 token,
-                index,
+                reader.getCurrentIndex(),
                 expected
         );
 
@@ -43,13 +43,13 @@ public class Tokenizer implements ITokenizer {
 
         builder.append('\t');
 
-        for (int i = 0; i < index - 1; i++) {
+        for (int i = 0; i < reader.getCurrentIndex() - 1; i++) {
             builder.append(" ");
         }
 
         builder.append("↑ Token not allowed here");
 
-        System.out.println("\t" + raw);
+        System.out.println("\t" + reader.getRaw());
         System.out.println(builder.toString());
     }
 
@@ -79,7 +79,7 @@ public class Tokenizer implements ITokenizer {
                 printUnexpectedEndError();
                 return null;
             } else if (currentChar == OPENING) {
-                printUnexpectedTokenError(reader.getRaw(), OPENING, BEGINNING, reader.getCurrentIndex());
+                printUnexpectedTokenError(reader, OPENING, BEGINNING);
                 return null;
             } else if (currentChar == BEGINNING) {
                 IToken token = readToken(reader);
@@ -117,10 +117,10 @@ public class Tokenizer implements ITokenizer {
             }
         } else if (currentChar == BEGINNING) {
             //error
-            printUnexpectedTokenError(reader.getRaw(), BEGINNING, OPENING, reader.getCurrentIndex());
+            printUnexpectedTokenError(reader, BEGINNING, OPENING);
         } else if (currentChar == CLOSING) {
             //error
-            printUnexpectedTokenError(reader.getRaw(), CLOSING, OPENING, reader.getCurrentIndex());
+            printUnexpectedTokenError(reader, CLOSING, OPENING);
         }
 
         return null;
@@ -143,7 +143,7 @@ public class Tokenizer implements ITokenizer {
             printUnexpectedEndError();
         } else if (currentChar != expected) {
             //error
-            printUnexpectedTokenError(reader.getRaw(), currentChar, expected, reader.getCurrentIndex());
+            printUnexpectedTokenError(reader, currentChar, expected);
         } else {
             return read;
         }
