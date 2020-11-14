@@ -5,7 +5,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class InvalidToken implements IToken {
     final String name;
@@ -27,7 +26,7 @@ public class InvalidToken implements IToken {
     }
 
     @Override
-    public @NotNull String getContent() {
-        return partialContent.stream().map(IToken::getContent).collect(Collectors.joining());
+    public @NotNull Iterable<IToken> getChildren() {
+        return partialContent;
     }
 }

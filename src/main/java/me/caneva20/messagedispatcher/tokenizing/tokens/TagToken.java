@@ -5,7 +5,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class TagToken implements IToken {
     public final String name;
@@ -28,7 +27,7 @@ public class TagToken implements IToken {
     }
 
     @Override
-    public @NotNull String getContent() {
-        return children.stream().map(IToken::getContent).collect(Collectors.joining());
+    public @NotNull Iterable<IToken> getChildren() {
+        return children;
     }
 }

@@ -3,6 +3,8 @@ package me.caneva20.messagedispatcher.tokenizing.tokens;
 import me.caneva20.messagedispatcher.tokenizing.IToken;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
+
 public class LiteralStringToken implements IToken {
     public final String content;
 
@@ -16,12 +18,12 @@ public class LiteralStringToken implements IToken {
     }
 
     @Override
-    public @NotNull String getContent() {
+    public String toString() {
         return content;
     }
 
     @Override
-    public String toString() {
-        return content;
+    public @NotNull Iterable<IToken> getChildren() {
+        return Collections.emptyList();
     }
 }

@@ -7,6 +7,5 @@ public interface IToken {
     @Nullable
     String getName();
 
-    @NotNull
-    String getContent();
+    @NotNull Iterable<IToken> getChildren();
 }
