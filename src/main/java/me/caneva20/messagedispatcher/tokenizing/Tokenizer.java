@@ -1,11 +1,10 @@
 package me.caneva20.messagedispatcher.tokenizing;
 
-import me.caneva20.messagedispatcher.tokenizing.tokens.InvalidToken;
 import me.caneva20.messagedispatcher.tokenizing.tokens.LiteralStringToken;
 import me.caneva20.messagedispatcher.tokenizing.tokens.TagToken;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Tokenizer implements ITokenizer {
@@ -19,97 +18,102 @@ public class Tokenizer implements ITokenizer {
         List<IToken> tokens = new ArrayList<>();
 
         while (reader.hasNext()) {
-            tokens.addAll(tokenize(reader));
+            List<IToken> result = tokenize(reader);
+
+            if (result == null) {
+                //error
+                break;
+            }
+
+            tokens.addAll(result);
         }
 
         return tokens;
     }
 
-    private void printMalformedTokenMissingClosing(String tokenName) {
-        System.out.printf("Malformed input (001): %s does not contain a closing tag\n", tokenName);
-    }
+    private void printUnexpectedTokenError(String raw, char token, char expected, int index) {
+        System.out.printf("Error: token '%s' is not allowed at %s. Expected was %s\n",
+                token,
+                index,
+                expected
+        );
 
-    private void printMalformedTokenMissingOpening(String tokenName) {
-        System.out.printf("Malformed input (002): %s does not contain an opening tag\n", tokenName);
-    }
+        StringBuilder builder = new StringBuilder();
 
-    private void printMalformedTokenInvalidStart(String tokenName) {
-        System.out.printf("Malformed input (003): Invalid $ found, %s does not contain an opening tag\n", tokenName);
-    }
+        builder.append('\t');
 
-    public List<IToken> tokenize(StringReader reader) {
-        List<IToken> doneTokens = new ArrayList<>();
-
-        List<IToken> children = new ArrayList<>();
-
-        String literal = reader.readTo(BEGINNING);
-        reader.moveNext();
-        reader.readCurrentPhrase();
-
-        if (!literal.isEmpty()) {
-            doneTokens.add(new LiteralStringToken(literal));
+        for (int i = 0; i < index - 1; i++) {
+            builder.append(" ");
         }
 
-        if (!reader.hasNext()) {
-            return doneTokens;
-        }
+        builder.append("↑ Token not allowed here");
 
-        String tokenName = reader.readTo(Arrays.asList(BEGINNING, OPENING, CLOSING));
-        reader.readCurrentPhrase();
+        System.out.println("\t" + raw);
+        System.out.println(builder.toString());
+    }
 
-        Character currentChar = reader.getCurrentChar();
+    private void printUnexpectedEndError() {
+        System.out.print("Error: unexpected string end reached\n");
+    }
 
-        reader.moveNext();
+    public @Nullable List<IToken> tokenize(StringReader reader) {
+        List<IToken> tokens = new ArrayList<>();
 
-        if (currentChar == BEGINNING || currentChar == CLOSING) {
-            if (currentChar == BEGINNING) {
-                printMalformedTokenInvalidStart(tokenName);
-            } else {
-                printMalformedTokenMissingOpening(tokenName);
+        while (true) {
+            String literal = reader.readTo(BEGINNING, OPENING, CLOSING);
+
+            if (!literal.isEmpty()) {
+                tokens.add(new LiteralStringToken(literal));
             }
 
-            doneTokens.add(new InvalidToken(tokenName, new LiteralStringToken("")));
-            return doneTokens;
-        }
+            if (!reader.hasNext()) {
+                return tokens;
+            }
 
-        do {
-            String partialContent = reader.readTo(Arrays.asList(BEGINNING, CLOSING));
-            currentChar = reader.getCurrentChar();
+            Character currentChar = reader.getCurrentChar();
+            reader.moveNext();
+            reader.readCurrentPhrase();
 
             if (currentChar == null) {
-                doneTokens.add(new InvalidToken(tokenName, new LiteralStringToken(partialContent)));
+                printUnexpectedEndError();
+                return null;
+            } else if (currentChar == OPENING) {
+                printUnexpectedTokenError(reader.getRaw(), OPENING, BEGINNING, reader.getCurrentIndex());
+                return null;
+            } else if (currentChar == BEGINNING) {
+                IToken token = readToken(reader);
 
-                printMalformedTokenMissingClosing(tokenName);
-                return doneTokens;
-            }
-
-            if (currentChar == BEGINNING) {
-                reader.readCurrentPhrase();
-
-                children.addAll(tokenize(reader));
-
-                //Clear current phrase
-                reader.readCurrentPhrase();
-                currentChar = reader.getCurrentChar();
-
-                if (currentChar == null) {
-                    doneTokens.add(new InvalidToken(tokenName, children));
-                    printMalformedTokenMissingClosing(tokenName);
-
-                    return doneTokens;
+                if (token == null) {
+                    //error
+                    return null;
                 }
+
+                tokens.add(token);
+            } else if (currentChar == CLOSING) {
+                return tokens;
             }
-        } while (currentChar != CLOSING);
+        }
+    }
 
-        String content = reader.readCurrentPhrase();
+    private @Nullable IToken readToken(StringReader reader) {
+        String read = reader.readTo(BEGINNING, OPENING, CLOSING);
+        Character currentChar = reader.getCurrentChar();
         reader.moveNext();
+        reader.readCurrentPhrase();
 
-        if (!content.isEmpty()) {
-            children.add(new LiteralStringToken(content));
+        if (currentChar == null) {
+            //error
+            printUnexpectedEndError();
+        } else if (currentChar == OPENING) {
+            return new TagToken(read, tokenize(reader));
+        } else if (currentChar == BEGINNING) {
+            //error
+            printUnexpectedTokenError(reader.getRaw(), BEGINNING, OPENING, reader.getCurrentIndex());
+        } else if (currentChar == CLOSING) {
+            //error
+            printUnexpectedTokenError(reader.getRaw(), CLOSING, OPENING, reader.getCurrentIndex());
         }
 
-        doneTokens.add(new TagToken(tokenName, children));
-
-        return doneTokens;
+        return null;
     }
 }
