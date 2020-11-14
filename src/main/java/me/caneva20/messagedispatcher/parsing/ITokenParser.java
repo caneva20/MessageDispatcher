@@ -1,5 +1,6 @@
-package me.caneva20.messagedispatcher;
+package me.caneva20.messagedispatcher.parsing;
 
+import me.caneva20.messagedispatcher.MessageLevel;
 import org.jetbrains.annotations.NotNull;
 
 public interface ITokenParser {

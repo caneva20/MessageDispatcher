@@ -1,6 +1,7 @@
 package me.caneva20.messagedispatcher;
 
 import me.caneva20.messagedispatcher.exceptions.NoTokenRegistryDefined;
+import me.caneva20.messagedispatcher.registries.ITokenRegistry;
 
 import java.util.HashMap;
 import java.util.Map;

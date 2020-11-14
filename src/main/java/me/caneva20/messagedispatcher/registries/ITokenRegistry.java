@@ -1,5 +1,7 @@
-package me.caneva20.messagedispatcher;
+package me.caneva20.messagedispatcher.registries;
 
+import me.caneva20.messagedispatcher.parsing.ITokenParser;
+import me.caneva20.messagedispatcher.MessageLevel;
 import me.caneva20.messagedispatcher.tokenizing.IToken;
 import org.jetbrains.annotations.NotNull;
 
