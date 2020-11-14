@@ -25,7 +25,7 @@ public class TokenRegistry implements ITokenRegistry {
     }
 
     @Override
-    public @NotNull String parse(@NotNull IToken token, String childrenContent, MessageLevel level) {
-        return getParser(token).parse(token, childrenContent, level);
+    public @NotNull String parse(@NotNull IToken token, @NotNull String content, MessageLevel level) {
+        return getParser(token).parse(content, level);
     }
 }
