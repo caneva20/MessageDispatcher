@@ -10,7 +10,7 @@ public class Messaging {
 
     public static ColorSwatch defaultColorSwatch = new ColorSwatch('2', 'a', '6', '0');
 
-    private static TokenRegistry tokenRegistry;
+    private static ITokenRegistry tokenRegistry;
 
     public static String makeTag(String name, MessageLevel level) {
         ColorSwatch colors = getColorSet(level);
@@ -26,11 +26,11 @@ public class Messaging {
         colors.put(level, set);
     }
 
-    public static void setTokenRegistry(TokenRegistry tokenRegistry) {
-        Messaging.tokenRegistry = tokenRegistry;
+    public static void setTokenRegistry(ITokenRegistry registry) {
+        Messaging.tokenRegistry = registry;
     }
 
-    public static TokenRegistry getTokenRegistry() {
+    public static ITokenRegistry getTokenRegistry() {
         if (tokenRegistry == null) {
             throw new NoTokenRegistryDefined();
         }
