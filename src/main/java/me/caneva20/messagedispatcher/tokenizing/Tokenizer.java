@@ -1,6 +1,7 @@
 package me.caneva20.messagedispatcher.tokenizing;
 
 import me.caneva20.messagedispatcher.tokenizing.tokens.LiteralStringToken;
+import me.caneva20.messagedispatcher.tokenizing.tokens.ParameterToken;
 import me.caneva20.messagedispatcher.tokenizing.tokens.TagToken;
 import org.jetbrains.annotations.Nullable;
 
@@ -96,7 +97,7 @@ public class Tokenizer implements ITokenizer {
     }
 
     private @Nullable IToken readToken(StringReader reader) {
-        String read = reader.readTo(BEGINNING, OPENING, CLOSING);
+        String name = reader.readTo(BEGINNING, OPENING, CLOSING);
         Character currentChar = reader.getCurrentChar();
         reader.moveNext();
         reader.readCurrentPhrase();
@@ -105,13 +106,46 @@ public class Tokenizer implements ITokenizer {
             //error
             printUnexpectedEndError();
         } else if (currentChar == OPENING) {
-            return new TagToken(read, tokenize(reader));
+            if (name.isEmpty()) {
+                String parameterName = readParameterName(reader);
+                
+                if (parameterName != null) {
+                    return new ParameterToken(name);
+                }
+            } else {
+                return new TagToken(name, tokenize(reader));
+            }
         } else if (currentChar == BEGINNING) {
             //error
             printUnexpectedTokenError(reader.getRaw(), BEGINNING, OPENING, reader.getCurrentIndex());
         } else if (currentChar == CLOSING) {
             //error
             printUnexpectedTokenError(reader.getRaw(), CLOSING, OPENING, reader.getCurrentIndex());
+        }
+
+        return null;
+    }
+
+    @Nullable
+    private String readParameterName(StringReader reader) {
+        return readTo(reader, CLOSING);
+    }
+
+    @Nullable
+    private String readTo(StringReader reader, char expected) {
+        String read = reader.readTo(BEGINNING, OPENING, CLOSING);
+        Character currentChar = reader.getCurrentChar();
+        reader.moveNext();
+        reader.readCurrentPhrase();
+
+        if (currentChar == null) {
+            //error
+            printUnexpectedEndError();
+        } else if (currentChar != expected) {
+            //error
+            printUnexpectedTokenError(reader.getRaw(), currentChar, expected, reader.getCurrentIndex());
+        } else {
+            return read;
         }
 
         return null;
