@@ -3,6 +3,8 @@ package me.caneva20.messagedispatcher;
 import me.caneva20.messagedispatcher.tokenizing.IToken;
 import me.caneva20.messagedispatcher.tokenizing.ITokenizer;
 import me.caneva20.messagedispatcher.tokenizing.tokens.LiteralStringToken;
+import me.caneva20.messagedispatcher.tokenizing.tokens.ParameterToken;
+import me.caneva20.messagedispatcher.tokenizing.tokens.TagToken;
 
 import java.util.List;
 
@@ -21,17 +23,17 @@ public class MessageParser implements IMessageParser {
         for (IToken token : tokens) {
             if (token instanceof LiteralStringToken) {
                 builder.append(((LiteralStringToken) token).content);
+            } else if (token instanceof TagToken) {
+                Iterable<IToken> children = ((TagToken) token).getChildren();
 
-                continue;
+                String content = buildMessage(children, level);
+
+                String parsed = registry.parse(token, content, level);
+
+                builder.append(parsed);
+            } else if (token instanceof ParameterToken) {
+                //TODO
             }
-
-            Iterable<IToken> children = token.getChildren();
-
-            String content = buildMessage(children, level);
-
-            String parsed = registry.parse(token, content, level);
-
-            builder.append(parsed);
         }
 
         return builder.toString();

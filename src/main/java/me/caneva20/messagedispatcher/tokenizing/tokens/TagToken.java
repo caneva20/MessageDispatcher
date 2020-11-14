@@ -26,8 +26,7 @@ public class TagToken implements IToken {
         return name;
     }
 
-    @Override
     public @NotNull Iterable<IToken> getChildren() {
-        return children;
+        return children != null ? children : Collections.emptyList();
     }
 }
