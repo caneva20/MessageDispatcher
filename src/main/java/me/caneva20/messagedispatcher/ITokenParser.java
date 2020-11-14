@@ -1,7 +1,7 @@
 package me.caneva20.messagedispatcher;
 
-import me.caneva20.messagedispatcher.tokenizing.IToken;
+import org.jetbrains.annotations.NotNull;
 
 public interface ITokenParser {
-    String parse(IToken token, MessageLevel level);
+    String parse(@NotNull String content, MessageLevel level);
 }
