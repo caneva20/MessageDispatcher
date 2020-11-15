@@ -8,7 +8,9 @@ import me.caneva20.messagedispatcher.tokenizing.tokens.LiteralStringToken;
 import me.caneva20.messagedispatcher.tokenizing.tokens.ParameterToken;
 import me.caneva20.messagedispatcher.tokenizing.tokens.TagToken;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class MessageParser implements IMessageParser {
     private final ITokenRegistry registry;
@@ -19,7 +21,7 @@ public class MessageParser implements IMessageParser {
         this.tokenizer = tokenizer;
     }
 
-    private String buildMessage(Iterable<IToken> tokens, MessageLevel level) {
+    private String buildMessage(Iterable<IToken> tokens, MessageLevel level, Map<String, String> parameters) {
         StringBuilder builder = new StringBuilder();
 
         for (IToken token : tokens) {
@@ -28,13 +30,19 @@ public class MessageParser implements IMessageParser {
             } else if (token instanceof TagToken) {
                 Iterable<IToken> children = ((TagToken) token).getChildren();
 
-                String content = buildMessage(children, level);
+                String content = buildMessage(children, level, parameters);
 
                 String parsed = registry.parse(token, content, level);
 
                 builder.append(parsed);
             } else if (token instanceof ParameterToken) {
-                //TODO
+                String paramName = token.getName();
+
+                if (parameters.containsKey(paramName)) {
+                    builder.append(parameters.get(paramName));
+                } else {
+                    builder.append(parameters.get(String.format("{{INVALID_PARAM:%s}}", paramName)));
+                }
             }
         }
 
@@ -42,9 +50,14 @@ public class MessageParser implements IMessageParser {
     }
 
     @Override
-    public String parse(String raw, MessageLevel level) {
+    public String parse(String raw, MessageLevel level, Map<String, String> parameters) {
         List<IToken> tokens = tokenizer.tokenize(raw);
 
-        return buildMessage(tokens, level);
+        return buildMessage(tokens, level, parameters);
+    }
+
+    @Override
+    public String parse(String raw, MessageLevel level) {
+        return parse(raw, level, Collections.emptyMap());
     }
 }
