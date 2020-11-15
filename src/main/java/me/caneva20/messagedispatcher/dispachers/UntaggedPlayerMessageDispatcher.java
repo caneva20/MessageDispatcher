@@ -5,6 +5,7 @@ import me.caneva20.messagedispatcher.parsing.IMessageParser;
 import org.bukkit.command.CommandSender;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 public class UntaggedPlayerMessageDispatcher extends MessageDispatcher {
@@ -17,7 +18,7 @@ public class UntaggedPlayerMessageDispatcher extends MessageDispatcher {
     }
 
     private void send(CommandSender to, String message, MessageLevel level) {
-        send(to, message, level, Collections.emptyMap());
+        send(to, message, level, new HashMap<>());
     }
 
     @Override
@@ -67,6 +68,6 @@ public class UntaggedPlayerMessageDispatcher extends MessageDispatcher {
 
     @Override
     public void debug(CommandSender to, String message) {
-        debug(to, message, Collections.emptyMap());
+        debug(to, message, new HashMap<>());
     }
 }
