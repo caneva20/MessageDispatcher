@@ -14,7 +14,7 @@ public class DefaultConfiguration implements IConfiguration {
 
     private boolean hasCustomMessageParser;
 
-    DefaultConfiguration() {
+    public DefaultConfiguration() {
         tokenizer = new Tokenizer();
         tokenRegistry = new TokenRegistry((content, level) -> content);
         messageParser = new MessageParser(tokenRegistry, tokenizer);
