@@ -13,12 +13,6 @@ public class Messaging {
 
     private static ITokenRegistry tokenRegistry;
 
-    public static String makeTag(String name, MessageLevel level) {
-        ColorSwatch colors = getColorSet(level);
-
-        return String.format("&%s[&%s%s&%s] ", colors.detail, colors.accent, name, colors.detail);
-    }
-
     public static ColorSwatch getColorSet(MessageLevel level) {
         return colors.getOrDefault(level, defaultColorSwatch);
     }
