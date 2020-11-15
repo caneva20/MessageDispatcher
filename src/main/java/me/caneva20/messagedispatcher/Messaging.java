@@ -1,6 +1,10 @@
 package me.caneva20.messagedispatcher;
 
+import me.caneva20.messagedispatcher.configurations.DefaultConfiguration;
 import me.caneva20.messagedispatcher.configurations.IConfiguration;
+import me.caneva20.messagedispatcher.configurations.TokenConfiguration;
+import me.caneva20.messagedispatcher.dispachers.*;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -30,5 +34,30 @@ public final class Messaging {
 
     public static <T extends IConfiguration> void configure(Class<T> klass, Consumer<T> fn) {
         fn.accept(get(klass));
+    }
+
+    public static IMessageDispatcher createDispatcher(String tag, boolean useTag) {
+        DefaultConfiguration defaultConfiguration = get(DefaultConfiguration.class);
+
+        if (useTag) {
+            TokenConfiguration tokenConfiguration = get(TokenConfiguration.class);
+            return new PlayerMessageDispatcher(defaultConfiguration.getMessageParser(), tag, tokenConfiguration);
+        }
+
+        return new UntaggedPlayerMessageDispatcher(defaultConfiguration.getMessageParser());
+    }
+
+    public static IMessageDispatcher createDispatcher(JavaPlugin plugin, boolean useTag) {
+        return createDispatcher(plugin.getName(), useTag);
+    }
+
+    public static IConsoleMessageDispatcher createConsoleDispatcher(JavaPlugin plugin, String tag, boolean useTag) {
+        IMessageDispatcher dispatcher = createDispatcher(tag, useTag);
+
+        return new ConsoleMessageDispatcher(plugin, dispatcher);
+    }
+
+    public static IConsoleMessageDispatcher createConsoleDispatcher(JavaPlugin plugin, boolean useTag) {
+        return createConsoleDispatcher(plugin, plugin.getName(), useTag);
     }
 }
