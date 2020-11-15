@@ -5,6 +5,12 @@ public class TokenConfiguration implements IConfiguration {
     private String debugTag;
     private String pluginNameParam;
 
+    public TokenConfiguration() {
+        tag = "PLUGIN_TAG";
+        debugTag = "PLUGIN_TAG_DEBUG";
+        pluginNameParam = "plugin name";
+    }
+
     public String getTag() {
         return tag;
     }
