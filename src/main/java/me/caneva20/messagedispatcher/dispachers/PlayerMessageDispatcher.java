@@ -1,6 +1,7 @@
 package me.caneva20.messagedispatcher.dispachers;
 
 import me.caneva20.messagedispatcher.MessageLevel;
+import me.caneva20.messagedispatcher.configurations.TokenConfiguration;
 import me.caneva20.messagedispatcher.parsing.IMessageParser;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -9,18 +10,6 @@ import java.util.Collections;
 import java.util.Map;
 
 public class PlayerMessageDispatcher extends MessageDispatcher {
-    public static class TokenConfiguration {
-        private final String tag;
-        private final String debugTag;
-        private final String pluginNameParam;
-
-        public TokenConfiguration(String tag, String debugTag, String pluginNameParam) {
-            this.tag = tag;
-            this.debugTag = debugTag;
-            this.pluginNameParam = pluginNameParam;
-        }
-    }
-
     private final String tagName;
     private final TokenConfiguration configuration;
 
@@ -36,9 +25,9 @@ public class PlayerMessageDispatcher extends MessageDispatcher {
     }
 
     private void send(CommandSender to, String message, MessageLevel level, Map<String, String> params) {
-        params.put(configuration.pluginNameParam, tagName);
+        params.put(configuration.getPluginNameParam(), tagName);
 
-        message = format(String.format("$%s<%s>%s", configuration.tag, tagName, message),
+        message = format(String.format("$%s<%s>%s", configuration.getTag(), tagName, message),
                 level,
                 params
         );
@@ -92,9 +81,9 @@ public class PlayerMessageDispatcher extends MessageDispatcher {
 
     @Override
     public void debug(CommandSender to, String message, Map<String, String> params) {
-        params.put(configuration.pluginNameParam, tagName);
+        params.put(configuration.getPluginNameParam(), tagName);
 
-        message = format(String.format("$%s<%s>%s", configuration.debugTag, tagName, message),
+        message = format(String.format("$%s<%s>%s", configuration.getDebugTag(), tagName, message),
                 MessageLevel.DEBUG,
                 params
         );
