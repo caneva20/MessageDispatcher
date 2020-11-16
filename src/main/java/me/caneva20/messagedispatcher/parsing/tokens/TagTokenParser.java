@@ -11,15 +11,15 @@ import java.util.Map;
 public class TagTokenParser implements ITokenParser {
     private final Map<MessageLevel, ColorSwatch> colorMap;
     private final ColorSwatch defaultColor;
-    private final char opening;
-    private final char closing;
+    private final String opening;
+    private final String closing;
     private final String debugPrefix;
     private final ColorSwatch debugColor;
 
     public TagTokenParser(Map<MessageLevel, ColorSwatch> colorMap,
                           ColorSwatch defaultColor,
-                          char opening,
-                          char closing,
+                          String opening,
+                          String closing,
                           @Nullable String debugPrefix,
                           @Nullable ColorSwatch debugColor
     ) {
