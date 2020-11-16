@@ -22,6 +22,8 @@ public final class Messaging {
         if (config == null) {
             try {
                 config = klass.newInstance();
+
+                configMap.put(klass, config);
             } catch (Exception e) {
                 System.out.println("Could not configure type " + klass.getName() + ". Does it contain a parameterless constructor?");
 
