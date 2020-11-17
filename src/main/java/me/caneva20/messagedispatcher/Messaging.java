@@ -38,6 +38,10 @@ public final class Messaging {
         fn.accept(get(klass));
     }
 
+    public static <T extends IConfiguration> void configure(Class<T> klass) {
+        get(klass);
+    }
+
     public static IMessageDispatcher createDispatcher(String tag, boolean useTag) {
         DefaultConfiguration defaultConfiguration = get(DefaultConfiguration.class);
 
