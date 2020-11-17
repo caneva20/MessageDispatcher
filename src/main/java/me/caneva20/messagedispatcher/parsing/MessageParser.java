@@ -26,7 +26,9 @@ public class MessageParser implements IMessageParser {
 
         for (IToken token : tokens) {
             if (token instanceof LiteralStringToken) {
-                builder.append(((LiteralStringToken) token).content);
+                String parsed = registry.parse(null, ((LiteralStringToken) token).content, level);
+
+                builder.append(parsed);
             } else if (token instanceof TagToken) {
                 Iterable<IToken> children = ((TagToken) token).getChildren();
 
