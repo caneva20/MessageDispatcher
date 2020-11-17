@@ -14,6 +14,14 @@ import java.util.function.Consumer;
 public final class Messaging {
     private static final Map<Class<? extends IConfiguration>, IConfiguration> configMap = new HashMap<>();
 
+    /**
+     * Returns an instance of a configuration file that can either be used
+     * to fetch a configuration for some feature or to set parameters that
+     * a feature might use
+     *
+     * @param klass The class to configure
+     * @return An instance of {@code kclass}
+     */
     @SuppressWarnings("unchecked")
     @NotNull
     public static <T extends IConfiguration> T get(Class<T> klass) {
