@@ -4,6 +4,7 @@ import me.caneva20.messagedispatcher.parsing.ITokenParser;
 import me.caneva20.messagedispatcher.MessageLevel;
 import me.caneva20.messagedispatcher.tokenizing.IToken;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +33,11 @@ public class TokenRegistry implements ITokenRegistry {
     }
 
     @Override
-    public @NotNull String parse(@NotNull IToken token, @NotNull String content, MessageLevel level) {
+    public @NotNull String parse(@Nullable IToken token, @NotNull String content, MessageLevel level) {
+        if (token == null) {
+            return defaultParser.parse(content, level);
+        }
+
         return getParser(token).parse(content, level);
     }
 }
