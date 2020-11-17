@@ -11,7 +11,7 @@ import java.util.Map;
 public class TokenRegistry implements ITokenRegistry {
     private final Map<String, ITokenParser> parsers = new HashMap<>();
 
-    private final ITokenParser defaultParser;
+    private ITokenParser defaultParser;
 
     public TokenRegistry(@NotNull ITokenParser defaultParser) {
         this.defaultParser = defaultParser;
@@ -19,6 +19,11 @@ public class TokenRegistry implements ITokenRegistry {
 
     private ITokenParser getParser(@NotNull IToken token) {
         return parsers.getOrDefault(token.getName(), defaultParser);
+    }
+
+    @Override
+    public void setDefaultParser(ITokenParser defaultParser) {
+        this.defaultParser = defaultParser;
     }
 
     @Override
