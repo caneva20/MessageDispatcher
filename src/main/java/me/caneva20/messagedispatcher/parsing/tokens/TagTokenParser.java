@@ -31,31 +31,30 @@ public class TagTokenParser extends TokenParser {
 
     @Override
     public String parse(@NotNull String content, MessageLevel level) {
-        var c = colorMap.getOrDefault(level, defaultColor);
-        var d = this.debugColor;
+        var color = getColor(level);
 
         var debugPrefix = "";
 
         if (this.debugPrefix != null && debugColor != null) {
             debugPrefix = String.format("&%s%s&%s%s&%s%s",
-                    d.detail,
+                    debugColor.detail,
                     opening,
-                    d.primary,
+                    debugColor.primary,
                     this.debugPrefix,
-                    d.detail,
+                    debugColor.detail,
                     closing
             );
         }
 
-
-        return String.format("&%s%s&%s%s&%s%s%s",
-                c.detail,
+        return String.format("&%s%s&%s%s&%s%s%s&%s",
+                color.detail,
                 opening,
-                c.primary,
+                color.primary,
                 content,
-                c.detail,
+                color.detail,
                 closing,
-                debugPrefix
+                debugPrefix,
+                color.primary
         );
     }
 }
