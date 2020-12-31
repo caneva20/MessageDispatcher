@@ -2,15 +2,13 @@ package me.caneva20.messagedispatcher.parsing.tokens;
 
 import me.caneva20.messagedispatcher.ColorSwatch;
 import me.caneva20.messagedispatcher.MessageLevel;
-import me.caneva20.messagedispatcher.parsing.ITokenParser;
+import me.caneva20.messagedispatcher.parsing.TokenParser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-public class TagTokenParser implements ITokenParser {
-    private final Map<MessageLevel, ColorSwatch> colorMap;
-    private final ColorSwatch defaultColor;
+public class TagTokenParser extends TokenParser {
     private final String opening;
     private final String closing;
     private final String debugPrefix;
@@ -23,8 +21,8 @@ public class TagTokenParser implements ITokenParser {
                           @Nullable String debugPrefix,
                           @Nullable ColorSwatch debugColor
     ) {
-        this.colorMap = colorMap;
-        this.defaultColor = defaultColor;
+        super(colorMap, defaultColor);
+
         this.opening = opening;
         this.closing = closing;
         this.debugPrefix = debugPrefix;

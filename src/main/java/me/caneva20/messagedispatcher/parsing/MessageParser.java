@@ -25,9 +25,7 @@ public class MessageParser implements IMessageParser {
 
         for (var token : tokens) {
             if (token instanceof LiteralStringToken) {
-                var parsed = registry.parse(null, ((LiteralStringToken) token).content, level);
-
-                builder.append(parsed);
+                builder.append(((LiteralStringToken) token).content);
             } else if (token instanceof TagToken) {
                 var children = ((TagToken) token).getChildren();
 
@@ -54,7 +52,7 @@ public class MessageParser implements IMessageParser {
     public String parse(String raw, MessageLevel level, Map<String, String> parameters) {
         var tokens = tokenizer.tokenize(raw);
 
-        return buildMessage(tokens, level, parameters);
+        return registry.parseRoot(buildMessage(tokens, level, parameters), level);
     }
 
     @Override
