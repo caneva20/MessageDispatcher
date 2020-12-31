@@ -7,6 +7,7 @@ import me.caneva20.messagedispatcher.dispachers.*;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -25,7 +26,7 @@ public final class Messaging {
     @SuppressWarnings("unchecked")
     @NotNull
     public static <T extends IConfiguration> T get(Class<T> klass) {
-        IConfiguration config = configMap.getOrDefault(klass, null);
+        var config = configMap.getOrDefault(klass, null);
 
         if (config == null) {
             try {
@@ -51,10 +52,10 @@ public final class Messaging {
     }
 
     public static IMessageDispatcher createDispatcher(String tag, boolean useTag) {
-        DefaultConfiguration defaultConfiguration = get(DefaultConfiguration.class);
+        var defaultConfiguration = get(DefaultConfiguration.class);
 
         if (useTag) {
-            TokenConfiguration tokenConfiguration = get(TokenConfiguration.class);
+            var tokenConfiguration = get(TokenConfiguration.class);
             return new PlayerMessageDispatcher(defaultConfiguration.getMessageParser(), tag, tokenConfiguration);
         }
 
@@ -66,7 +67,7 @@ public final class Messaging {
     }
 
     public static IConsoleMessageDispatcher createConsoleDispatcher(JavaPlugin plugin, String tag, boolean useTag) {
-        IMessageDispatcher dispatcher = createDispatcher(tag, useTag);
+        var dispatcher = createDispatcher(tag, useTag);
 
         return new ConsoleMessageDispatcher(plugin, dispatcher);
     }

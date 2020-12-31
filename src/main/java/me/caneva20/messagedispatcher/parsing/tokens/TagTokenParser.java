@@ -33,10 +33,10 @@ public class TagTokenParser implements ITokenParser {
 
     @Override
     public String parse(@NotNull String content, MessageLevel level) {
-        ColorSwatch c = colorMap.getOrDefault(level, defaultColor);
-        ColorSwatch d = this.debugColor;
+        var c = colorMap.getOrDefault(level, defaultColor);
+        var d = this.debugColor;
 
-        String debugPrefix = "";
+        var debugPrefix = "";
 
         if (this.debugPrefix != null && debugColor != null) {
             debugPrefix = String.format("&%s%s&%s%s&%s%s",

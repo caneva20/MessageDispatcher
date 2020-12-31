@@ -16,11 +16,11 @@ public class Tokenizer implements ITokenizer {
 
     @Override
     public List<IToken> tokenize(String raw) {
-        StringReader reader = new StringReader(raw, ESCAPING);
+        var reader = new StringReader(raw, ESCAPING);
         List<IToken> tokens = new ArrayList<>();
 
         while (reader.hasNext()) {
-            List<IToken> result = tokenize(reader);
+            var result = tokenize(reader);
 
             if (result == null) {
                 //error
@@ -40,11 +40,11 @@ public class Tokenizer implements ITokenizer {
                 expected
         );
 
-        StringBuilder builder = new StringBuilder();
+        var builder = new StringBuilder();
 
         builder.append('\t');
 
-        for (int i = 0; i < reader.getCurrentIndex() - 1; i++) {
+        for (var i = 0; i < reader.getCurrentIndex() - 1; i++) {
             builder.append(" ");
         }
 
@@ -59,10 +59,10 @@ public class Tokenizer implements ITokenizer {
     }
 
     public @Nullable List<IToken> tokenize(StringReader reader) {
-        List<IToken> tokens = new ArrayList<>();
+        var tokens = new ArrayList<IToken>();
 
         while (true) {
-            String literal = reader.readTo(BEGINNING, OPENING, CLOSING);
+            var literal = reader.readTo(BEGINNING, OPENING, CLOSING);
 
             if (!literal.isEmpty()) {
                 tokens.add(new LiteralStringToken(literal));
@@ -72,7 +72,7 @@ public class Tokenizer implements ITokenizer {
                 return tokens;
             }
 
-            Character currentChar = reader.getCurrentChar();
+            var currentChar = reader.getCurrentChar();
             reader.moveNext();
             reader.readCurrentPhrase();
 
@@ -83,7 +83,7 @@ public class Tokenizer implements ITokenizer {
                 printUnexpectedTokenError(reader, OPENING, BEGINNING);
                 return null;
             } else if (currentChar == BEGINNING) {
-                IToken token = readToken(reader);
+                var token = readToken(reader);
 
                 if (token == null) {
                     //error
@@ -98,8 +98,8 @@ public class Tokenizer implements ITokenizer {
     }
 
     private @Nullable IToken readToken(StringReader reader) {
-        String name = reader.readTo(BEGINNING, OPENING, CLOSING);
-        Character currentChar = reader.getCurrentChar();
+        var name = reader.readTo(BEGINNING, OPENING, CLOSING);
+        var currentChar = reader.getCurrentChar();
         reader.moveNext();
         reader.readCurrentPhrase();
 
@@ -108,7 +108,7 @@ public class Tokenizer implements ITokenizer {
             printUnexpectedEndError();
         } else if (currentChar == OPENING) {
             if (name.isEmpty()) {
-                String parameterName = readParameterName(reader);
+                var parameterName = readParameterName(reader);
                 
                 if (parameterName != null) {
                     return new ParameterToken(parameterName);
@@ -134,8 +134,8 @@ public class Tokenizer implements ITokenizer {
 
     @Nullable
     private String readTo(StringReader reader, char expected) {
-        String read = reader.readTo(BEGINNING, OPENING, CLOSING);
-        Character currentChar = reader.getCurrentChar();
+        var read = reader.readTo(BEGINNING, OPENING, CLOSING);
+        var currentChar = reader.getCurrentChar();
         reader.moveNext();
         reader.readCurrentPhrase();
 

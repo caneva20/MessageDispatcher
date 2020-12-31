@@ -49,7 +49,7 @@ public class StringReader {
     }
 
     public String readCurrentPhrase() {
-        String currentPhrase = _currentPhrase.toString();
+        var currentPhrase = _currentPhrase.toString();
         _currentPhrase = new StringBuilder();
 
         return currentPhrase;

@@ -9,7 +9,6 @@ import me.caneva20.messagedispatcher.tokenizing.tokens.ParameterToken;
 import me.caneva20.messagedispatcher.tokenizing.tokens.TagToken;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 public class MessageParser implements IMessageParser {
@@ -22,23 +21,23 @@ public class MessageParser implements IMessageParser {
     }
 
     private String buildMessage(Iterable<IToken> tokens, MessageLevel level, Map<String, String> parameters) {
-        StringBuilder builder = new StringBuilder();
+        var builder = new StringBuilder();
 
-        for (IToken token : tokens) {
+        for (var token : tokens) {
             if (token instanceof LiteralStringToken) {
-                String parsed = registry.parse(null, ((LiteralStringToken) token).content, level);
+                var parsed = registry.parse(null, ((LiteralStringToken) token).content, level);
 
                 builder.append(parsed);
             } else if (token instanceof TagToken) {
-                Iterable<IToken> children = ((TagToken) token).getChildren();
+                var children = ((TagToken) token).getChildren();
 
-                String content = buildMessage(children, level, parameters);
+                var content = buildMessage(children, level, parameters);
 
-                String parsed = registry.parse(token, content, level);
+                var parsed = registry.parse(token, content, level);
 
                 builder.append(parsed);
             } else if (token instanceof ParameterToken) {
-                String paramName = token.getName();
+                var paramName = token.getName();
 
                 if (parameters.containsKey(paramName)) {
                     builder.append(parameters.get(paramName));
@@ -53,7 +52,7 @@ public class MessageParser implements IMessageParser {
 
     @Override
     public String parse(String raw, MessageLevel level, Map<String, String> parameters) {
-        List<IToken> tokens = tokenizer.tokenize(raw);
+        var tokens = tokenizer.tokenize(raw);
 
         return buildMessage(tokens, level, parameters);
     }

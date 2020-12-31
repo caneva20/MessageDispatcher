@@ -4,7 +4,6 @@ import me.caneva20.messagedispatcher.MessageLevel;
 import me.caneva20.messagedispatcher.parsing.IMessageParser;
 import org.bukkit.command.CommandSender;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 

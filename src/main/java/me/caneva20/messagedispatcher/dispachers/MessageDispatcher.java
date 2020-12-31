@@ -16,7 +16,7 @@ public abstract class MessageDispatcher implements IMessageDispatcher {
     }
 
     protected String format(String rawMessage, MessageLevel level, Map<String, String> params) {
-        String message = parser.parse(rawMessage, level, params);
+        var message = parser.parse(rawMessage, level, params);
 
         return ChatColor.translateAlternateColorCodes('&', message);
     }
