@@ -51,31 +51,33 @@ public final class Messaging {
     get(klass);
   }
 
-  public static IMessageDispatcher createDispatcher(String tag, boolean useTag) {
+  public static IMessageDispatcher createDispatcher() {
     var defaultConfiguration = get(DefaultConfiguration.class);
-
-    if (useTag) {
-      var tokenConfiguration = get(TokenConfiguration.class);
-      return new PlayerMessageDispatcher(defaultConfiguration.getMessageParser(), tag,
-          tokenConfiguration);
-    }
 
     return new UntaggedPlayerMessageDispatcher(defaultConfiguration.getMessageParser());
   }
 
-  public static IMessageDispatcher createDispatcher(JavaPlugin plugin, boolean useTag) {
-    return createDispatcher(plugin.getName(), useTag);
+  public static IMessageDispatcher createDispatcher(String tag) {
+    var defaultConfiguration = get(DefaultConfiguration.class);
+
+    var tokenConfiguration = get(TokenConfiguration.class);
+    return new PlayerMessageDispatcher(defaultConfiguration.getMessageParser(), tag,
+        tokenConfiguration);
   }
 
-  public static IConsoleMessageDispatcher createConsoleDispatcher(JavaPlugin plugin, String tag,
-      boolean useTag) {
-    var dispatcher = createDispatcher(tag, useTag);
-
-    return new ConsoleMessageDispatcher(plugin, dispatcher);
+  public static IMessageDispatcher createDispatcher(JavaPlugin plugin) {
+    return createDispatcher(plugin.getName());
   }
 
-  public static IConsoleMessageDispatcher createConsoleDispatcher(JavaPlugin plugin,
-      boolean useTag) {
-    return createConsoleDispatcher(plugin, plugin.getName(), useTag);
+  public static IConsoleMessageDispatcher createConsoleDispatcher() {
+    return new ConsoleMessageDispatcher(createDispatcher());
+  }
+
+  public static IConsoleMessageDispatcher createConsoleDispatcher(String tag) {
+    return new ConsoleMessageDispatcher(createDispatcher(tag));
+  }
+
+  public static IConsoleMessageDispatcher createConsoleDispatcher(JavaPlugin plugin) {
+    return createConsoleDispatcher(plugin.getName());
   }
 }

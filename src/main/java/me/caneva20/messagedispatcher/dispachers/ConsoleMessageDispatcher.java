@@ -1,18 +1,17 @@
 package me.caneva20.messagedispatcher.dispachers;
 
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import java.util.Map;
+import org.bukkit.Bukkit;
+import org.bukkit.command.ConsoleCommandSender;
 
 public class ConsoleMessageDispatcher implements IConsoleMessageDispatcher {
 
   private final IMessageDispatcher dispatcher;
   private final ConsoleCommandSender console;
 
-  public ConsoleMessageDispatcher(JavaPlugin plugin, IMessageDispatcher dispatcher) {
+  public ConsoleMessageDispatcher(IMessageDispatcher dispatcher) {
     this.dispatcher = dispatcher;
-    console = plugin.getServer().getConsoleSender();
+    console = Bukkit.getServer().getConsoleSender();
   }
 
   @Override
