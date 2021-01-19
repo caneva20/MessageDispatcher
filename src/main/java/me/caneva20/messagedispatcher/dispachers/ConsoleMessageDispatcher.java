@@ -20,6 +20,11 @@ public class ConsoleMessageDispatcher implements IConsoleMessageDispatcher {
   }
 
   @Override
+  public void raw(String message, String... params) {
+    dispatcher.raw(console, message, params);
+  }
+
+  @Override
   public void info(String message, Map<String, String> params) {
     dispatcher.info(console, message, params);
   }
@@ -27,6 +32,11 @@ public class ConsoleMessageDispatcher implements IConsoleMessageDispatcher {
   @Override
   public void info(String message) {
     dispatcher.info(console, message);
+  }
+
+  @Override
+  public void info(String message, String... params) {
+    dispatcher.info(console, message, params);
   }
 
   @Override
@@ -40,6 +50,11 @@ public class ConsoleMessageDispatcher implements IConsoleMessageDispatcher {
   }
 
   @Override
+  public void warn(String message, String... params) {
+    dispatcher.warn(console, message, params);
+  }
+
+  @Override
   public void success(String message, Map<String, String> params) {
     dispatcher.success(console, message, params);
   }
@@ -47,6 +62,11 @@ public class ConsoleMessageDispatcher implements IConsoleMessageDispatcher {
   @Override
   public void success(String message) {
     dispatcher.success(console, message);
+  }
+
+  @Override
+  public void success(String message, String... params) {
+    dispatcher.success(console, message, params);
   }
 
   @Override
@@ -60,6 +80,11 @@ public class ConsoleMessageDispatcher implements IConsoleMessageDispatcher {
   }
 
   @Override
+  public void error(String message, String... params) {
+    dispatcher.error(console, message, params);
+  }
+
+  @Override
   public void debug(String message, Map<String, String> params) {
     dispatcher.debug(console, message, params);
   }
@@ -67,5 +92,10 @@ public class ConsoleMessageDispatcher implements IConsoleMessageDispatcher {
   @Override
   public void debug(String message) {
     dispatcher.debug(console, message);
+  }
+
+  @Override
+  public void debug(String message, String... params) {
+    dispatcher.debug(console, message, params);
   }
 }
