@@ -3,7 +3,6 @@ package me.caneva20.messagedispatcher.dispachers;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
-import java.util.stream.Collectors;
 import me.caneva20.messagedispatcher.MessageLevel;
 import me.caneva20.messagedispatcher.parsing.IMessageParser;
 import org.bukkit.ChatColor;
@@ -27,16 +26,12 @@ public abstract class MessageDispatcher implements IMessageDispatcher {
     return format(rawMessage, level, Collections.emptyMap());
   }
 
-  protected String format(String rawMessage, MessageLevel level, String... params) {
-    final var collect = Arrays.stream(params).map(x -> "$par<" + x + ">")
-        .collect(Collectors.toList());
-
-    return format(String.format(rawMessage, collect), level);
+  protected String format(String rawMessage, MessageLevel level, Object... params) {
+    return format(bundle(rawMessage, params), level);
   }
 
-  protected String bundle(String message, String... params) {
-    final var collect = Arrays.stream(params).map(x -> "$par<" + x + ">")
-        .collect(Collectors.toList());
+  protected String bundle(String message, Object... params) {
+    final var collect = Arrays.stream(params).map(x -> "$par<" + x + ">").toArray();
 
     return String.format(message, collect);
   }
@@ -47,32 +42,32 @@ public abstract class MessageDispatcher implements IMessageDispatcher {
   }
 
   @Override
-  public void raw(CommandSender to, String message, String... params) {
+  public void raw(CommandSender to, String message, Object... params) {
     raw(to, bundle(message, params));
   }
 
   @Override
-  public void info(CommandSender to, String message, String... params) {
+  public void info(CommandSender to, String message, Object... params) {
     info(to, bundle(message, params));
   }
 
   @Override
-  public void warn(CommandSender to, String message, String... params) {
+  public void warn(CommandSender to, String message, Object... params) {
     warn(to, bundle(message, params));
   }
 
   @Override
-  public void success(CommandSender to, String message, String... params) {
+  public void success(CommandSender to, String message, Object... params) {
     success(to, bundle(message, params));
   }
 
   @Override
-  public void error(CommandSender to, String message, String... params) {
+  public void error(CommandSender to, String message, Object... params) {
     error(to, bundle(message, params));
   }
 
   @Override
-  public void debug(CommandSender to, String message, String... params) {
+  public void debug(CommandSender to, String message, Object... params) {
     debug(to, bundle(message, params));
   }
 }

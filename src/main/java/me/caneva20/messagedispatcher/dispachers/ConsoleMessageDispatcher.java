@@ -20,7 +20,7 @@ public class ConsoleMessageDispatcher implements IConsoleMessageDispatcher {
   }
 
   @Override
-  public void raw(String message, String... params) {
+  public void raw(String message, Object... params) {
     dispatcher.raw(console, message, params);
   }
 
@@ -35,7 +35,7 @@ public class ConsoleMessageDispatcher implements IConsoleMessageDispatcher {
   }
 
   @Override
-  public void info(String message, String... params) {
+  public void info(String message, Object... params) {
     dispatcher.info(console, message, params);
   }
 
@@ -50,7 +50,7 @@ public class ConsoleMessageDispatcher implements IConsoleMessageDispatcher {
   }
 
   @Override
-  public void warn(String message, String... params) {
+  public void warn(String message, Object... params) {
     dispatcher.warn(console, message, params);
   }
 
@@ -65,7 +65,7 @@ public class ConsoleMessageDispatcher implements IConsoleMessageDispatcher {
   }
 
   @Override
-  public void success(String message, String... params) {
+  public void success(String message, Object... params) {
     dispatcher.success(console, message, params);
   }
 
@@ -80,7 +80,7 @@ public class ConsoleMessageDispatcher implements IConsoleMessageDispatcher {
   }
 
   @Override
-  public void error(String message, String... params) {
+  public void error(String message, Object... params) {
     dispatcher.error(console, message, params);
   }
 
@@ -95,7 +95,7 @@ public class ConsoleMessageDispatcher implements IConsoleMessageDispatcher {
   }
 
   @Override
-  public void debug(String message, String... params) {
+  public void debug(String message, Object... params) {
     dispatcher.debug(console, message, params);
   }
 }
