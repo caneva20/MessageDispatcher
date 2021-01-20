@@ -6,7 +6,7 @@
 
   <groupId>me.caneva20</groupId>
   <artifactId>message-dispatcher</artifactId>
-  <version>1.2.4</version>
+  <version>1.2.5</version>
 
   <name>MessageDispatcher</name>
   <url>https://github.com/caneva20/MessageDispatcher</url>
@@ -21,14 +21,6 @@
     <project.versionCode>${project.version}</project.versionCode>
     <project.finalNameBase>${project.outputName}-${project.version}</project.finalNameBase>
   </properties>
-
-  <distributionManagement>
-    <repository>
-      <id>github</id>
-      <name>caneva20</name>
-      <url>https://maven.pkg.github.com/caneva20/MessageDispatcher</url>
-    </repository>
-  </distributionManagement>
 
   <repositories>
     <repository>
