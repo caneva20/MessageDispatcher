@@ -12,7 +12,7 @@
   </repositories>
   ```
 
-* Add the depency:
+* Add the dependency:
   ```xml
   <dependency>
       <groupId>me.caneva20</groupId>
